@@ -17,11 +17,15 @@ entity alu is
 	);
 end entity;
 
--- put your architecture here
+
 architecture arch of alu is 
 begin 
 	alu_process : process(all) is 
+		--derive log2 of DATA_WIDTH (log_2(32) = 4)
+		constant x : natural := log2c(DATA_WIDTH);
 	begin 
+		report to_string(x);
+
 		case op is  
 			when ALU_NOP => 
 				R <= B;
@@ -36,9 +40,11 @@ begin
 				Z <= not R(0);
 			when ALU_SLTU => 
 				if(unsigned(A) < unsigned(B)) then 
-					R <= (others=>'1');
+					--R <= (others=>'1');
+					R(0) <= '1';
 				else 
-					R <= (others=>'0');
+					--R <= (others=>'0');
+					R(0) <= '0';
 				end if;
 
 				Z <= not R(0);
@@ -62,8 +68,14 @@ begin
 				R <= A xor B;
 				Z <= '-';
 			when ALU_SLL => 
+				R <= std_ulogic_vector(shift_left(unsigned(A), to_integer(unsigned(B(x downto 0)))));
+				Z <= '-';
 			when ALU_SRL => 
+				R <= std_ulogic_vector(shift_right(unsigned(A), to_integer(unsigned(B(x downto 0)))));
+				Z <= '-';
 			when ALU_SRA => 
+				R <= std_ulogic_vector(shift_right(signed(A), to_integer(unsigned(B(x downto 0)))));
+				Z <= '-';
 		end case;
 	end process;
 end architecture;
