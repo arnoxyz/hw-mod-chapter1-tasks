@@ -19,8 +19,6 @@ begin
 		-- you might want to add some auxiliary subprograms or constants / variables in here
 		variable i : natural;
 		variable j : natural;
-
-		
 	begin
 		vhdldraw.init(size);
 
@@ -45,10 +43,14 @@ begin
 		--fill with circles
 		vhdldraw.setColor(BLACK);
 		vhdldraw.setLineWidth(circleLineWidth);
-		i:=0;
-		while i < 500 loop
-			vhdldraw.drawCircle(60+i,60, circleSize);
-			i:=i+60;
+		j:=0;
+		while j < 500 loop
+			i:=0;
+			while i < 500 loop
+				vhdldraw.drawCircle(60+i,60+j, circleSize);
+				i:=i+60;
+			end loop;
+		j:=j+60;
 		end loop;
 
 
