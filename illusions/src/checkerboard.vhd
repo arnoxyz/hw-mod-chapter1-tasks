@@ -15,8 +15,8 @@ begin
 
 		variable i,j : natural;
 		variable k,l : natural := 0;
-		-- you might want to add some auxiliary subprograms or constants / variables in here
 	begin
+		report "~~~~~~ drawing checkerboard.ppm now ~~~~~~";
 		vhdldraw.init(cols * size, rows * size);
 
 		--fill with squares

@@ -16,13 +16,12 @@ begin
 		constant circleSize : natural := 30;
 		constant circleLineWidth : natural := 4;
 
-		-- you might want to add some auxiliary subprograms or constants / variables in here
-		variable i : natural;
-		variable j : natural;
+		variable i,j : natural;
 	begin
+		report "~~~~~~ drawing checkerboard.ppm now ~~~~~~";
+
 		vhdldraw.init(size);
 
-		report "fuck this shit";
 		-- draw the illusion here
 		vhdldraw.setColor(WHITE);
 		vhdldraw.fillRectangle(0,0, size, size);		
