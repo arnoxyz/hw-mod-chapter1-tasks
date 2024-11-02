@@ -13,6 +13,9 @@ begin
 		constant squareSize : natural := 50; 
 		constant squareLineWidth : natural := 3;
 
+		constant circleSize : natural := 30;
+		constant circleLineWidth : natural := 4;
+
 		-- you might want to add some auxiliary subprograms or constants / variables in here
 		variable i : natural;
 		variable j : natural;
@@ -39,7 +42,14 @@ begin
 		j:=j+50+spaceSquares;
 		end loop;
 
-
+		--fill with circles
+		vhdldraw.setColor(BLACK);
+		vhdldraw.setLineWidth(circleLineWidth);
+		i:=0;
+		while i < 500 loop
+			vhdldraw.drawCircle(60+i,60, circleSize);
+			i:=i+60;
+		end loop;
 
 
 		vhdldraw.show("squarecircle.ppm");
