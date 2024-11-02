@@ -43,22 +43,26 @@ begin
 
 
 		--fill with rectangles
-		i:=0;
-		k:=0;
-		while i < 350 loop
-			if (k mod 2) = 0 then 
-				vhdldraw.setColor(WHITE);
-				vhdldraw.fillRectangle(30+i, 38, 20, 4);
-				vhdldraw.setColor(BLACK);
-				vhdldraw.fillRectangle(38+i, 30, 4, 20);
-			else 
-				vhdldraw.setColor(WHITE);
-				vhdldraw.fillRectangle(38+i, 30, 4, 20);
-				vhdldraw.setColor(BLACK);
-				vhdldraw.fillRectangle(30+i, 38, 20, 4);
-			end if;
-			i:=i+size;
-			k:=k+1;
+		j:=0;
+		while j < 400 loop
+			i:=0;
+			k:=0;
+			while i < 350 loop
+				if (k mod 2) = 0 then 
+					vhdldraw.setColor(WHITE);
+					vhdldraw.fillRectangle(30+i, 38+j, 20, 4);
+					vhdldraw.setColor(BLACK);
+					vhdldraw.fillRectangle(38+i, 30+j, 4, 20);
+				else 
+					vhdldraw.setColor(WHITE);
+					vhdldraw.fillRectangle(38+i, 30+j, 4, 20);
+					vhdldraw.setColor(BLACK);
+					vhdldraw.fillRectangle(30+i, 38+j, 20, 4);
+				end if;
+				i:=i+size;
+				k:=k+1;
+			end loop;
+			j:=j+40;
 		end loop;
 
 
