@@ -87,28 +87,42 @@ begin
 				end case;
 					case form is 
 						when RECT =>
-							draw.fillRectangle(x,y,5,15);
+							draw.drawRectangle(x,y,1,75);
+							draw.drawRectangle(x,y,75,5);
+							draw.drawRectangle(x,y,8,5);
+							draw.drawRectangle(x,y,3,8);
 						when CIRCLE =>
-							draw.fillCircle(x,y,5);
+							draw.drawCircle(x,y,50);
+							draw.drawCircle(x,y,5);
+							draw.drawCircle(x,y,2);
+							draw.drawCircle(x,y,1);
 						when SQUARE =>
-							draw.fillSquare(x,y,3);
+							draw.drawSquare(x,y,200);
+							draw.drawSquare(x,y,21);
+							draw.drawSquare(x,y,2);
+							draw.drawSquare(x,y,1);
 					end case;
 
 					case form is 
 						when RECT =>
-							draw.drawRectangle(y,x,5,15);
+							draw.drawRectangle(y,x,150,1);
+							draw.drawCircle(y,x,125);
+							draw.drawSquare(x,y,50);
 						when CIRCLE =>
-							draw.drawCircle(y,x,5);
+							draw.drawRectangle(y,x,50,100);
+							draw.drawSquare(x,y,50);
+							draw.drawCircle(y,x,35);
 						when SQUARE =>
-							draw.drawSquare(x,y,3);
+							draw.drawSquare(x,y,250);
+							draw.drawCircle(y,x,115);
+							draw.drawRectangle(y,x,50,1);
 					end case;
 
 					x:=x+1;
 					y:=y+1;
 			end loop;
 
-			report "drawing " & to_string(form) & " with color " & to_string(color) & "pos (" & to_string(x) & "," & to_string(y) & ")";
-
+			--report "drawing " & to_string(form) & " with color " & to_string(color) & " pos (" & to_string(x) & "," & to_string(y) & ")";
 		end procedure;
 
 
