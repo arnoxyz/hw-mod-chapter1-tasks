@@ -12,6 +12,10 @@ architecture tb of adder4_tb is
 	signal z1,z2 : std_ulogic;
 	signal sum_ha, cout_ha : std_ulogic;
 	signal sum_fa, cout_fa, cin_fa : std_ulogic;
+
+	--signals for uut (adder4)
+	signal a_adder4, b_adder4, s_adder4 : std_ulogic_vector(3 downto 0);
+	signal cin_adder4, cout_adder4 : std_ulogic;
 begin
 
 	--TASK 1: implement xor_gate, and_gate
@@ -78,20 +82,42 @@ begin
 	end process;
 
 	-- Instantiate the unit under test (adder4)
+	uut : adder4 
+	port map(
+		a => a_adder4,
+		b => b_adder4,
+		cin => cin_adder4,
+		s => s_adder4,
+		cout => cout_adder4
+	);
 
 	-- Stimulus process
 	stimulus: process
 		-- implement this procedure!
 		procedure test_values(value_a, value_b, value_cin : integer) is
+			variable local_sum : std_ulogic_vector(3 downto 0) := "0000";
 		begin
-			-- assert that Sum is correct
-			-- assert Cout is correct
+			a_adder4 <= std_ulogic_vector(to_unsigned(value_a, 4));
+			b_adder4 <= std_ulogic_vector(to_unsigned(value_b, 4));
+			cin_adder4 <= std_logic(to_unsigned(value_cin, 1)(0));
+
+			wait for 1 ns;
+			local_sum := std_ulogic_vector(to_unsigned(value_a, 4)+to_unsigned(value_b, 4)+to_unsigned(value_cin, 1)(0));
+
+			assert s_adder4 = local_sum  report "sum for (" & to_string(value_a)  & " " & to_string(value_b) & " "  & to_string(value_cin) & ") is false " & "local sum is = " & to_string(local_sum);
+			assert cout_adder4 = to_unsigned(value_a+value_b+value_cin, 5)(4)  report "cout for (" & to_string(value_a)  & " " & to_string(value_b) & " "  & to_string(value_cin) & ") is false";
 		end procedure;
 	begin
 		report "simulation start";
-		
+
 		-- Apply test stimuli
-		test_values(0,0,0);
+		for i in 0 to 2**4-1 loop
+			for j in 0 to 2**4-1 loop
+				for k in 0 to 2**1-1 loop
+					test_values(i,j,k);
+				end loop;
+			end loop;
+		end loop;
 
 		report "simulation end";
 		-- End simulation
