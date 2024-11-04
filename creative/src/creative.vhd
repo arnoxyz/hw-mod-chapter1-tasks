@@ -125,15 +125,21 @@ begin
 			--report "drawing " & to_string(form) & " with color " & to_string(color) & " pos (" & to_string(x) & "," & to_string(y) & ")";
 		end procedure;
 
+		procedure drawCreative(seed : integer) is 
+		begin 
+			ran := std_ulogic_vector(to_unsigned(seed,16));
+
+			draw.init(400, 400);
+			for i in 0 downto -777 loop
+				draw_form(i);
+			end loop;
+		end procedure;
+
 
 	begin
-		draw.init(400, 400);
-
-		--draw_form(number: integer; x: integer; y: integer) is
-		for i in 0 downto -777 loop
-			draw_form(i);
-		end loop;
-
+		--seed for ran generator (x"010f" is 271)
+		report to_string((to_integer(unsigned(ran))));
+		drawCreative(271);
 		draw.show("creative.ppm");
 		wait;
 	end process;
