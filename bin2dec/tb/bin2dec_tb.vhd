@@ -10,9 +10,9 @@ entity bin2dec_tb is
 end entity;
 
 architecture tb of bin2dec_tb is
-	constant width : integer := 8;
+	constant INPUT_WIDTH : integer := 8;
 
-	signal bin_in : std_ulogic_vector(width-1 downto 0);
+	signal bin_in : std_ulogic_vector(INPUT_WIDTH-1 downto 0);
 	signal dec_out : integer;
 	constant BCD_UPPER_BOUND : integer := (log10c(2**bin_in'length-1)*4)-1;
 	signal bcd_out : std_ulogic_vector(BCD_UPPER_BOUND downto 0);
@@ -44,23 +44,23 @@ begin
 		end function;
 
 		function to_bcd_All(decRange : integer) return std_ulogic_vector is 
-			variable local_bcd : std_ulogic_vector(BCD_UPPER_BOUND downto 0) := (others => '0'); 
-			variable loop_size : integer := log10c(2**bin_in'length-1)-1;
+			constant SIZE_LOOP : integer := log10c(2**bin_in'length-1)-1;
+			variable localBcd : std_ulogic_vector(BCD_UPPER_BOUND downto 0) := (others => '0'); 
 		begin 
-			for i in 0 to loop_size-1 loop
-				local_bcd((BCD_UPPER_BOUND)-(4*i) downto ((BCD_UPPER_BOUND-3)-(4*i))) := to_bcd(decRange/(10**(loop_size-i)) mod 10);
+			for i in 0 to SIZE_LOOP-1 loop
+				localBcd((BCD_UPPER_BOUND)-(4*i) downto ((BCD_UPPER_BOUND-3)-(4*i))) := to_bcd(decRange/(10**(SIZE_LOOP-i)) mod 10);
 			end loop;
 
-			local_bcd(3 downto 0) := to_bcd(decRange mod 10);
+			localBcd(3 downto 0) := to_bcd(decRange mod 10);
 
-			return local_bcd;
+			return localBcd;
 		end function;
 
 
 		procedure test1 is 
 		begin 
-			for i in 2**width-1 downto 0 loop
-				bin_in <= std_ulogic_vector(to_unsigned(i, width));
+			for i in 2**INPUT_WIDTH-1 downto 0 loop
+				bin_in <= std_ulogic_vector(to_unsigned(i, INPUT_WIDTH));
 				wait for 1 ns;
 				assert dec_out = to_integer(unsigned(bin_in)) report to_string(dec_out) & " " & to_string(to_integer(unsigned(bin_in)));
 			end loop;
@@ -68,8 +68,8 @@ begin
 
 		procedure test2 is 
 		begin 
-			for i in 2**width-1 downto 0 loop
-				bin_in <= std_ulogic_vector(to_unsigned(i, width));
+			for i in 2**INPUT_WIDTH-1 downto 0 loop
+				bin_in <= std_ulogic_vector(to_unsigned(i, INPUT_WIDTH));
 				wait for 1 ns;
 				assert dec_out = to_integer(unsigned(bin_in)) report to_string(dec_out) & " " & to_string(to_integer(unsigned(bin_in)));
 				assert bcd_out = to_bcd_all(to_integer(unsigned(bin_in))) report to_string(bcd_out) & " " & to_string(to_bcd_all(to_integer(unsigned(bin_in))));

@@ -18,13 +18,13 @@ architecture beh of bin2dec is
 begin 
 	--convert bin_in to dec_out
 	conversion : process(all)  
-		variable local_dec : integer := 0;
+		constant SIZE_BCD : integer := (log10c(2**bin_in'length-1)*4)-1;
+		constant SIZE_LOOP : integer := log10c(2**bin_in'length-1)-1;
 
-		variable size : integer := 0;
-		variable local_bcd : std_ulogic_vector((log10c(2**bin_in'length-1)*4)-1 downto 0);
-		variable decRange : integer := 0;
-		variable loopSize : integer := 0;
-		variable number : integer := 0;
+		variable localBcd : std_ulogic_vector(SIZE_BCD downto 0);
+		variable localDec : integer := 0;
+		variable decRange : integer := 0; 
+		variable decimalPower : integer := 0;
 
 		function to_bcd(a : integer) return std_ulogic_vector is 
 		begin 
@@ -45,27 +45,22 @@ begin
 		end function;
 
 	begin 
-		local_dec := 0;
+		--convert bin_in to dec
+		localDec := 0;
 		for i in bin_in'range loop
 			if bin_in(i) = '1' then 
-				local_dec := local_dec + (2**i);
+				localDec := localDec + (2**i);
 			end if;
 		end loop;
+		dec_out <= localDec;
 
-		dec_out <= local_dec;
-		decRange := local_dec;
-
-		size := (log10c(2**bin_in'length-1)*4)-1;
-		loopSize := log10c(2**bin_in'length-1)-1;
-		number := 0;
-
-		for i in 0 to loopSize-1 loop 
-			number := 10**(loopSize-i);
-			local_bcd((size)-(4*i) downto ((size-3)-(4*i))) := to_bcd(decRange/number mod 10);
+		--convert dec to bcd
+		for i in 0 to SIZE_LOOP-1 loop 
+			decimalPower := 10**(SIZE_LOOP-i);
+			localBcd((SIZE_BCD)-(4*i) downto (SIZE_BCD-3)-(4*i)) := to_bcd((localDec/decimalPower) mod 10);
 		end loop;
+		localBcd(3 downto 0) := to_bcd(localDec mod 10);
 
-		local_bcd(3 downto 0) := to_bcd(decRange mod 10);
-
-		bcd_out <= local_bcd;
+		bcd_out <= localBcd;
 	end process;
 end architecture;
