@@ -9,7 +9,7 @@ end entity;
 architecture tb of adder4_tb is
 	-- You might want to add some signals
 	signal a,b : std_ulogic := '0';
-	signal z1,z2 : std_ulogic;
+	signal z1,z2,z3 : std_ulogic;
 	signal sum_ha, cout_ha : std_ulogic;
 	signal sum_fa, cout_fa, cin_fa : std_ulogic;
 
@@ -33,6 +33,13 @@ begin
 		z => z2
 	);
 
+	or_gate1 : or_gate
+	port map(
+		a => a,
+		b => b,
+		z => z3
+	);
+
 	--TASK 2: implement half adder with xor_gate, and_gate
 	halfadder1 : halfadder 
 	port map(
@@ -53,29 +60,31 @@ begin
 	);
 
 	testGates : process 
+		procedure simulation(a1 : std_ulogic; b1 : std_ulogic; c1 : std_ulogic) is 
+		begin 
+			report "testing with (a,b,c_in)=(" & to_string(a1) & "," & to_string(b1) & "," & to_string(c1) & ")";
+			a <= a1;
+			b <= b1;
+			cin_fa <= c1;
+			wait for 1 ns;
+			assert z1 = (a xor b) report "xor_gate not working";
+			assert z2 = (a and b) report "and_gate not working";
+			assert z3 = (a or b) report "or_gate not working";
+			assert cout_ha = (a and b) report "cout_ha not working";
+			assert sum_ha = (a xor b) report "sum_ha not working";
+			assert cout_fa = ((a and b) or (cin_fa and a) or (cin_fa and b)) report "cout_fa not working";
+			assert sum_fa = ((a xor b) xor cin_fa) report "sum_fa not working";
+		end procedure;
 	begin 
-		report "sim xor_gate, and_gate, halfadder, fulladder";
-		a <= '0';
-		b <= '1';
-		cin_fa <= '0';
-		wait for 1 ns;
-		assert z1 = (a xor b) report "xor_gate not working";
-		assert z2 = (a and b) report "and_gate not working";
-		assert cout_ha = (a and b) report "cout_ha not working";
-		assert sum_ha = (a xor b) report "sum_ha not working";
-		assert cout_fa = ((a and b) or (cin_fa and (a and b))) report "cout_fa not working";
-		assert sum_fa = ((a xor b) xor cin_fa) report "sum_fa not working";
-
-		a <= '1';
-		b <= '1';
-		cin_fa <= '0';
-		wait for 1 ns;
-		assert z1 = (a xor b) report "xor_gate not working";
-		assert z2 = (a and b) report "and_gate not working";
-		assert cout_ha = (a and b) report "cout_ha not working";
-		assert sum_ha = (a xor b) report "sum_ha not working";
-		assert cout_fa = ((a and b) or (cin_fa and (a and b))) report "cout_fa not working";
-		assert sum_fa = ((a xor b) xor cin_fa) report "sum_fa not working";
+		report "sim xor_gate, and_gate, or_gate, halfadder, fulladder";
+		simulation('1','1','1');
+		simulation('1','1','0');
+		simulation('1','0','1');
+		simulation('1','0','0');
+		simulation('0','1','1');
+		simulation('0','1','0');
+		simulation('0','0','1');
+		simulation('0','0','0');
 		report "sim done";
 
 		wait;
@@ -113,7 +122,7 @@ begin
 		-- Apply test stimuli
 		for i in 0 to 2**4-1 loop
 			for j in 0 to 2**4-1 loop
-				for k in 0 to 2**1-1 loop
+				for k in 0 to 1 loop
 					test_values(i,j,k);
 				end loop;
 			end loop;

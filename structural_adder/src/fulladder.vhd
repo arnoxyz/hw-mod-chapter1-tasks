@@ -36,5 +36,11 @@ begin
 	);
 
 	--or the two cout
-	cout <= cout1 or cout2;
+	or1 : or_gate
+	port map(
+		a => cout1,
+		b => cout2,
+		z => cout
+	);
+	--cout <= cout1 or cout2;
 end architecture;
