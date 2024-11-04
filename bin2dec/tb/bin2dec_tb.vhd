@@ -10,7 +10,8 @@ entity bin2dec_tb is
 end entity;
 
 architecture tb of bin2dec_tb is
-	constant width : integer := 4;
+	constant width : integer := 8;
+
 	signal bin_in : std_ulogic_vector(width-1 downto 0);
 	signal dec_out : integer;
 	constant BCD_UPPER_BOUND : integer := (log10c(2**bin_in'length-1)*4)-1;
@@ -44,14 +45,13 @@ begin
 
 		function to_bcd_All(decRange : integer) return std_ulogic_vector is 
 			variable local_bcd : std_ulogic_vector(BCD_UPPER_BOUND downto 0) := (others => '0'); 
+			variable loop_size : integer := log10c(2**bin_in'length-1)-1;
 		begin 
-			for i in 0 to log10c(decRange) loop
-				if i = log10c(decRange) then 
-					local_bcd(3 downto 0) := to_bcd(decRange mod 10);
-				else 
-					local_bcd((BCD_UPPER_BOUND)-(4*i) downto ((BCD_UPPER_BOUND-3)-(4*i))) := to_bcd(decRange/(10**(i+1)));
-				end if;
+			for i in 0 to loop_size-1 loop
+				local_bcd((BCD_UPPER_BOUND)-(4*i) downto ((BCD_UPPER_BOUND-3)-(4*i))) := to_bcd(decRange/(10**(loop_size-i)) mod 10);
 			end loop;
+
+			local_bcd(3 downto 0) := to_bcd(decRange mod 10);
 
 			return local_bcd;
 		end function;
@@ -86,11 +86,10 @@ begin
 
 		-- apply your stimulus here
 		--only tests the binary to decimal conversion	
-		test1;
+		--test1;
 
 		--tests also bcd conversion
 		test2;
-
 		wait;
 	end process;
 end architecture;
