@@ -45,32 +45,24 @@ begin
 				when 7 => return "0111";
 				when 8 => return "1000";
 				when 9 => return "1001";
-				when others => return "1111";
+				when others => return "0000";
 			end case;
 
 			return "1111";
 		end function;
 
 		variable size : integer := 0;
-		--variable local_bcd : std_ulogic_vector((log10c(decRange)*4)-1 downto 0);
-		variable local_bcd : std_ulogic_vector(7 downto 0);
+		variable local_bcd : std_ulogic_vector((log10c(2**bin_in'length-1)*4)-1 downto 0);
 	begin
-		size := (log10c(decRange)*4)-1;
-		report to_string(size);
-		--report to_string(size);
+		size := (log10c(2**bin_in'length-1)*4)-1;
 
-		if decRange < 10 then 
-			local_bcd(3 downto 0) := to_bcd(decRange mod 10);
-		else
-			for i in 0 to log10c(decRange) loop
-				if i = log10c(decRange) then 
-					local_bcd(3 downto 0) := to_bcd(decRange mod 10);
-					exit;
-				else 
-					local_bcd((size)-(4*i) downto ((size-3)-(4*i))) := to_bcd(decRange/(10**i));
-				end if;
-			end loop;
-		end if;
+		for i in 0 to log10c(decRange) loop
+			if i = log10c(decRange) then 
+				local_bcd(3 downto 0) := to_bcd(decRange mod 10);
+			else 
+				local_bcd((size)-(4*i) downto ((size-3)-(4*i))) := to_bcd(decRange/(10**(i+1)));
+			end if;
+		end loop;
 
 		bcd_out <= local_bcd;
 	end process;

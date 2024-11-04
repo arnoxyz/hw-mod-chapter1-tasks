@@ -13,7 +13,7 @@ architecture tb of bin2dec_tb is
 	constant width : integer := 4;
 	signal bin_in : std_ulogic_vector(width-1 downto 0);
 	signal dec_out : integer;
-	signal bcd_out : std_ulogic_vector(7 downto 0);
+	signal bcd_out : std_ulogic_vector((log10c(2**bin_in'length-1)*4)-1 downto 0);
 begin
 	uut : bin2dec
 	port map(
