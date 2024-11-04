@@ -54,20 +54,19 @@ begin
 		variable size : integer := 0;
 		--variable local_bcd : std_ulogic_vector((log10c(decRange)*4)-1 downto 0);
 		variable local_bcd : std_ulogic_vector(7 downto 0);
-	begin 
+	begin
 		size := (log10c(decRange)*4)-1;
 		report to_string(size);
+		--report to_string(size);
 
-		if size < 0 then 
-		else 
+		if decRange < 10 then 
+			local_bcd(3 downto 0) := to_bcd(decRange mod 10);
+		else
 			for i in 0 to log10c(decRange) loop
-				if (i = log10c(decRange)) then 
+				if i = log10c(decRange) then 
 					local_bcd(3 downto 0) := to_bcd(decRange mod 10);
+					exit;
 				else 
-					--fixed size test
-					--local_bcd(7 downto 4) := to_bcd(decRange/(10**i));
-
-					--local_bcd(((log10c(decRange)*4)-1)-4*i) downto (((log10c(decRange)*4)-4)-4*i) := to_bcd(decRange/(10**i));
 					local_bcd((size)-(4*i) downto ((size-3)-(4*i))) := to_bcd(decRange/(10**i));
 				end if;
 			end loop;

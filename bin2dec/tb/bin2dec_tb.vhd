@@ -13,7 +13,6 @@ architecture tb of bin2dec_tb is
 	constant width : integer := 4;
 	signal bin_in : std_ulogic_vector(width-1 downto 0);
 	signal dec_out : integer;
-
 	signal bcd_out : std_ulogic_vector(7 downto 0);
 begin
 	uut : bin2dec
@@ -35,14 +34,13 @@ begin
 
 	begin
 		-- apply your stimulus here
-		--test1;
+		test1;
 
-		bin_in <= "1111";
-		wait for 1 ns;
-		bin_in <= "0111";
+		-- bin_in <= "0001";
 		wait for 1 ns;
 
-
+		--bin_in <= "0111";
+		--wait for 1 ns;
 		--report to_string(dec_out) & " " & to_string(bcd_out);
 		wait;
 	end process;
