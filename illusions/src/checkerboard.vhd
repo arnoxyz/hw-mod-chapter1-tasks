@@ -9,80 +9,84 @@ begin
 		constant size : natural := 40;
 		constant cols : natural := 10;
 		constant rows : natural := 11;
-
 		variable vhdldraw : vhdldraw_t;
-		variable color : color_t := GREEN;
 
-		variable i,j : natural;
-		variable k,l : natural := 0;
-	begin
-		report "~~~~~~ drawing checkerboard.ppm now ~~~~~~";
-		vhdldraw.init(cols * size, rows * size);
-
-		--fill with squares
-		vhdldraw.setColor(BLACK);
-		j:=0;
-		k:=0;
-		l:=0;
-		while j < 550 loop
+		procedure fillWithSquares(color1 : color_t; color2 : color_t) is 
+			variable i,j,k,l : natural := 0;
+		begin 
+			while j < 550 loop
 			i:=0;
 			k:=l;
-			while i < 550 loop
-				if (k mod 2) = 1 then 
-					vhdldraw.setColor(GREEN);
-				else 
-					vhdldraw.setColor(BLUE);
-				end if;
-				vhdldraw.fillSquare(i,j, size);
-				i:=i+size;
-				k:=k+1;
+				while i < 550 loop
+					if (k mod 2) = 1 then 
+						vhdldraw.setColor(color1);
+					else 
+						vhdldraw.setColor(color2);
+					end if;
+					vhdldraw.fillSquare(i,j, size);
+					i:=i+size;
+					k:=k+1;
+				end loop;
+			j:=j+size;
+			l:=l+1;
 			end loop;
-		j:=j+size;
-		l:=l+1;
-		end loop;
+		end procedure;
 
+		procedure drawRectangleColor(x,y,width,height : natural; color : color_t) is 
+		begin 
+			vhdldraw.setColor(color);
+			vhdldraw.fillRectangle(x, y, width, height);
+		end procedure;
 
-		--fill with rectangles
-		j:=0;
-		l:=0;
-		while j < 400 loop
+		procedure fillWithRectangles(color1 : color_t; color2 : color_t) is 
+			variable i,j,k,l : natural := 0;
+		begin 
+			while j < 400 loop
 			i:=0;
 			k:=0;
-			while i < 350 loop
-				if (l mod 2) = 0 then 
-					if (k mod 2) = 0 then 
-						vhdldraw.setColor(WHITE);
-						vhdldraw.fillRectangle(30+i, 38+j, 20, 4);
-						vhdldraw.setColor(BLACK);
-						vhdldraw.fillRectangle(38+i, 30+j, 4, 20);
+				while i < 350 loop
+					if (l mod 2) = 0 then 
+						if (k mod 2) = 0 then 
+							drawRectangleColor(30+i,38+j,20,4,color1);
+							drawRectangleColor(38+i,30+j,4,20,color2);
+						else 
+							drawRectangleColor(38+i,30+j,4,20,color1);
+							drawRectangleColor(30+i,38+j,20,4,color2);
+						end if;
 					else 
-						vhdldraw.setColor(WHITE);
-						vhdldraw.fillRectangle(38+i, 30+j, 4, 20);
-						vhdldraw.setColor(BLACK);
-						vhdldraw.fillRectangle(30+i, 38+j, 20, 4);
+						if (k mod 2) = 0 then 
+							drawRectangleColor(38+i,30+j,4,20,color1);
+							drawRectangleColor(30+i,38+j,20,4,color2);
+						else 
+							drawRectangleColor(30+i,38+j,20,4,color1);
+							drawRectangleColor(38+i,30+j,4,20,color2);
+						end if;
 					end if;
-				else 
-					if (k mod 2) = 0 then 
-						vhdldraw.setColor(WHITE);
-						vhdldraw.fillRectangle(38+i, 30+j, 4, 20);
-						vhdldraw.setColor(BLACK);
-						vhdldraw.fillRectangle(30+i, 38+j, 20, 4);
-					else 
-						vhdldraw.setColor(WHITE);
-						vhdldraw.fillRectangle(30+i, 38+j, 20, 4);
-						vhdldraw.setColor(BLACK);
-						vhdldraw.fillRectangle(38+i, 30+j, 4, 20);
-					end if;
-				end if;
 				i:=i+size;
 				k:=k+1;
-			end loop;
+				end loop;
 			j:=j+40;
 			l:=l+1;
-		end loop;
+			end loop;
+		end procedure;
 
+		procedure drawCheckerboard(squareColor1 : color_t; squareColor2 : color_t; rectangleColor1 : color_t; rectangleColor2 : color_t) is 
+		begin 
+			vhdldraw.init(cols * size, rows * size);
+			--fill with squares - Background
+			fillWithSquares(squareColor1,squareColor2);
+			--fill with rectangles
+			fillWithRectangles(rectangleColor1,rectangleColor2);
+		end procedure;
 
+	begin
+		report "~~~~~~ drawing checkerboard.ppm now ~~~~~~";
+		drawCheckerboard(GREEN,BLUE,WHITE,BLACK);
 		vhdldraw.show("checkerboard.ppm");
+
+		--different coloring v1
+		--drawCheckerboard(GREEN,BLUE,BLUE,BLUE);
+		--drawCheckerboard(GREEN,BLUE,BLUE,GREEN);
 		wait;
 	end process;
 
