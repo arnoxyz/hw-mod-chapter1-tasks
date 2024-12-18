@@ -1,3 +1,21 @@
+--Implement MergeSort or Quicksort (Recursive)
+--Algorithm provided in Introduction to Programming 1 Course
+
+
+--Mergesort:
+--TODO: Read the recursive implementation of mergesort 
+--TODO: Implement the recursive implementation of mergesort in python
+--TODO: Review and repeat array type in vhdl
+--TODO: Read the sorting.vhd code and helper fucntions
+--TODO: start implementing the mergesort in vhdl
+--TODO: split the program into subprograms using functions/procedures
+
+
+--maybe later to see the difference:
+--TODO: Read the recursive implementation of quicksort 
+--TODO: Implement the recursive implementation of quicksort in python
+
+
 library ieee;
 use ieee.math_real.all;
 
