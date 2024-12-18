@@ -1,3 +1,16 @@
+--Goal: write testbench for the SRAM on the FPGA
+
+--TODO:study the datasheet
+--TODO: study sram.vhd implements the read cycles 1 and 2 (datasheet page11)
+--TODO: study sram.vhd implements the write cycles 1,2 and 3 (datasheet page 14, 15)
+--TODO: study sram_pkg.vhd (might be helpfull)
+--TODO: implement a tb one of the  read cycles
+--TODO: implement a tb one of the  write cycles
+--TODO: write the sequence x"BADC0DEDC0DEBA5E" to memory address 0-3
+--TODO: read then the sequence (assert the data that is read)
+--TODO: generate a wave form and check if everything works accordingly
+
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
