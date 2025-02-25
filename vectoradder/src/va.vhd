@@ -11,6 +11,5 @@ end entity;
 
 architecture arch of va is
 begin
-	--TODO: Implement vector adder:w
-	
+	sum <= std_ulogic_vector(unsigned('0' & a)+unsigned('0' & b));
 end architecture;

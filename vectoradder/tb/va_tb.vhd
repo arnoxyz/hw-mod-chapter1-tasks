@@ -6,6 +6,26 @@ entity va_tb is
 end entity;
 
 architecture tb of va_tb is
+	signal a, b: std_ulogic_vector(7 downto 0);
+	signal sum : std_ulogic_vector(8 downto 0);
 begin
-	--TODO: simulate vector adder
+	stimulus : process is 
+	begin 
+		for i in 0 to 2**a'length-1 loop 
+			a <= std_logic_vector(to_unsigned(i, a'length));
+			for j in 0 to 2**b'length-1 loop
+				b <= std_logic_vector(to_unsigned(j, b'length));	
+				wait for 1 ns;
+				assert to_integer(unsigned(sum)) = i+j report "FAIL1 " & to_string(i+j) & " but got " & to_string(to_integer(unsigned(sum)));
+			end loop;
+		end loop;
+		wait;
+	end process;
+
+	dut : entity work.va(arch)
+	port map(
+		a => a, 
+	 	b => b,
+	 	sum => sum
+	);
 end architecture;

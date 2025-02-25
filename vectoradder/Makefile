@@ -6,4 +6,4 @@ VHDL_FILES =\
 TB=va_tb
 WAVE_FILE=wave.do
 
-include ../../../util/simple_flow.mk
+include ../../util/simple_flow.mk
