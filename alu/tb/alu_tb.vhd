@@ -17,9 +17,10 @@ architecture tb of alu_tb is
 	signal b : std_ulogic_vector(DATA_WIDTH-1 downto 0) := (0=>'1', 3=>'1', others=>'0');
 	signal r : std_ulogic_vector(DATA_WIDTH-1 downto 0);
 	signal z : std_ulogic;
+
 begin
 	-- Instantiate your ALU here
-	uut : alu
+	uut : entity work.alu(arch2)
 	port map(
 		a => a, 
 		b => b, 

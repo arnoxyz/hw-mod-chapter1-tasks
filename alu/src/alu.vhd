@@ -79,3 +79,14 @@ begin
 		end case;
 	end process;
 end architecture;
+
+
+--for learning repeat the exercise
+architecture arch2 of alu is 
+begin 
+	alu_process : process(all) is 
+	begin 
+		--TODO: implement the alu
+
+	end process;
+end architecture;
