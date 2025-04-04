@@ -109,7 +109,7 @@ begin
 				Z <= '-';
 			when ALU_SUB =>
 				R <= std_ulogic_vector(signed(A) - signed(B));
-				Z <= '-';
+				Z <= '1' when ((signed(A)- signed(B))=0) else '0';
 			when ALU_AND=>
 				R <= A and B; 
 				Z <= '-';
