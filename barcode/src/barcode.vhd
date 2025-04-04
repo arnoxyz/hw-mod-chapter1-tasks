@@ -26,7 +26,7 @@ begin
 		constant bar_width : natural := 2;                -- Width of a single bar ("module" in Wikipedia article)
 		constant quiet_zone : natural := 15 * bar_width;  -- "quite zone" of the code (a bit more than in the Wikipedia article)
 		constant input_str: string := "HW_MOD 2024W";
-
+j
 		variable vhdldraw : vhdldraw_t;
 
 		variable bar_height : natural;           -- Calculate based on window width

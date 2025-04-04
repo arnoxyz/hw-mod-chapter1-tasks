@@ -91,7 +91,7 @@ begin
 	end process;
 
 	-- Instantiate the unit under test (adder4)
-	uut : adder4 
+	uut : entity work.adder4(beh2)
 	port map(
 		a => a_adder4,
 		b => b_adder4,

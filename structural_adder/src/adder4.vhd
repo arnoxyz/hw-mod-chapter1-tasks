@@ -54,3 +54,36 @@ begin
 		sum => s(3)
 	);
 end architecture;
+
+
+-- using generate statements
+architecture beh2 of adder4 is
+    signal c : std_ulogic_vector(3 downto 0);  -- Carry signals for full adders
+begin
+
+	fa : fulladder
+	port map(
+		a => a(0),
+		b => b(0),
+		cin => cin,
+		cout => c(0),     -- Carry out from each full adder
+		sum => s(0)
+	);
+
+    -- Generate block to instantiate full adders
+    gen_fas : for i in 1 to 3 generate
+        -- Assign cin_temp based on the loop index
+        fa : fulladder
+        port map(
+            a => a(i),
+            b => b(i),
+			cin => (c(i-1)),
+            cout => c(i),   
+            sum => s(i)
+        );
+    end generate gen_fas;
+
+    -- Final carry out
+    cout <= c(3);  -- The last carry out is the overall carry out
+
+end architecture;
