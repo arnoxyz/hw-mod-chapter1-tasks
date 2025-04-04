@@ -40,11 +40,9 @@ begin
 				Z <= not R(0);
 			when ALU_SLTU => 
 				if(unsigned(A) < unsigned(B)) then 
-					--R <= (others=>'1');
-					R(0) <= '1';
+					R <= (others=>'1');
 				else 
-					--R <= (others=>'0');
-					R(0) <= '0';
+					R <= (others=>'0');
 				end if;
 
 				Z <= not R(0);
@@ -85,8 +83,43 @@ end architecture;
 architecture arch2 of alu is 
 begin 
 	alu_process : process(all) is 
+		constant x : integer := log2c(DATA_WIDTH);
 	begin 
-		--TODO: implement the alu
+		case op is 
+			when ALU_NOP =>
+				R <= B;
+				Z <= '-';
+			when ALU_SLT =>
+				R <= (others => '1') when signed(A) < signed(B) else (others => '0');
+				Z <= R(0);
+			when ALU_SLTU =>
+				R <= (others => '1') when unsigned(A) < unsigned(B) else (others => '0');
+				Z <= R(0);
+			when ALU_SLL =>
+				R <= std_ulogic_vector(shift_left(unsigned(A), to_integer(unsigned(B(x downto 0)))));
+				Z <= '-';
+			when ALU_SRL =>
+				R <= std_ulogic_vector(shift_right(unsigned(A), to_integer(unsigned(B(x downto 0)))));
+				Z <= '-';
+			when ALU_SRA =>
+				R <= std_ulogic_vector(shift_right(signed(A), to_integer(unsigned(B(x downto 0)))));
+				Z <= '-';
+			when ALU_ADD =>
+				R <= std_ulogic_vector(signed(A) + signed(B));
+				Z <= '-';
+			when ALU_SUB =>
+				R <= std_ulogic_vector(signed(A) - signed(B));
+				Z <= '-';
+			when ALU_AND=>
+				R <= A and B; 
+				Z <= '-';
+			when ALU_OR =>
+				R <= A or B; 
+				Z <= '-';
+			when ALU_XOR =>
+				R <= A xor B; 
+				Z <= '-';
+		end case;
 
 	end process;
 end architecture;
